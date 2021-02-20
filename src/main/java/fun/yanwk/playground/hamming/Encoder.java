@@ -136,9 +136,10 @@ class Encoder {
      *               通常，输入数据中含有多少组码块，就分多少。
      *               等价于“输出数据中，多少个比特为一组”。
      */
-    // 注意此处用 groups 一词，仅为与程序代码中的 block（汉明码的码块）区分，勿混淆概念。
-    // 参考： https://en.wikipedia.org/wiki/Burst_error-correcting_code#Interleaved_codes
-    // 参考： https://www.mathworks.com/help/comm/ug/interleaving.html
+    /* 注意此处用 groups 一词，仅为与程序代码中的 block（汉明码的码块）区分，勿混淆概念。
+     * 参考： https://en.wikipedia.org/wiki/Burst_error-correcting_code#Interleaved_codes
+     * 参考： https://www.mathworks.com/help/comm/ug/interleaving.html
+     */
     protected static byte[] blockInterleave(final byte[] source, int groups) {
         if ((source.length * 8) % groups != 0) {
             throw new IndexOutOfBoundsException("分组数量与数据长度不对齐！请确保整除关系！");
