@@ -33,16 +33,16 @@
 cd target/
 
 # 查看帮助
-java -jar hamming-codec-1.0.0.jar --help
+java -jar hamming-codec.jar --help
 
 # 编码文件
-java -jar hamming-codec-1.0.0.jar --encode file1.txt file1.send
+java -jar hamming-codec.jar --encode file1.txt file1.send
 
 # 模拟干扰效果（随机翻转比特）
-java -jar hamming-codec-1.0.0.jar --distort file1.send file1.recv
+java -jar hamming-codec.jar --distort file1.send file1.recv
 
 # 纠错、解码文件
-java -jar hamming-codec-1.0.0.jar --decode file1.recv file1_recovered.txt
+java -jar hamming-codec.jar --decode file1.recv file1_recovered.txt
 
 ----
 
