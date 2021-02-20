@@ -1,0 +1,49 @@
+/*
+ 计算编码后的码块的字节长度，注意输入值是【输入数据切片】的字节长度。比如：
+ 输入 1 应返回 2，对应 (13,8) 汉明码
+ 输入 7 应返回 8，对应 (63,56) 汉明码
+ 输入 8 应返回 9，对应 (72,64) 汉明码
+ 输入 1048576 应返回 1048580，对应 (8388633,8388608) 汉明码
+*/
+
+import java.io.ByteArrayInputStream;
+import java.util.Arrays;
+    private static int calcEncodedSize(int dataLength) {
+        // 求所需校验位数（不含扩展位）
+        final int parityBits = (int) Math.floor(Math.log(dataLength * 8 + 1) / Math.log(2)) + 1;
+        System.out.println("parity bits: " + parityBits);
+        // 数据+校验的总位数（含0号位的扩展校验位，故+1）
+        final int totalBits = dataLength * 8 + parityBits + 1;
+        System.out.println("total bits: " + totalBits);
+        return (int) Math.ceil(totalBits / 8.0);
+    }
+
+    private static int calcEncodedSize2(int dataLength) {
+        int parityBits = 2;
+        while (parityBits < 32) {
+            int dataBits = (int) Math.pow(2, parityBits) - parityBits - 1;
+            System.out.println(parityBits + " parity bits can include data bits: " + dataBits);
+            if (dataBits >= dataLength * 8) {
+                break;
+            }
+            parityBits++;
+        }
+        System.out.println("parity bits: " + parityBits);
+        int allBits = dataLength * 8 + parityBits + 1;
+        System.out.println("total bits: " + allBits);
+        return (int) Math.ceil(allBits / 8.0);
+    }
+
+    calcEncodedSize(1048580);
+    calcEncodedSize2(1048580);
+
+    //-----------------------------
+
+    ByteArrayInputStream bis = new ByteArrayInputStream("Hello, world".getBytes());
+    byte[] buffer = new byte[8];
+    int i1 = bis.read(buffer);
+    Arrays.toString(buffer)
+    int i2 = bis.read(buffer);
+    Arrays.toString(buffer)
+    int i3 = bis.read(buffer);
+    Arrays.toString(buffer)
