@@ -37,10 +37,10 @@ public class HammingCodec {
     // 每 8 组码块为一套传输块，进行分组交织
     private static final int ENCODER_GROUPS_PER_INTERLEAVING = 8;
 
-    // 干扰器读写缓冲区大小
-    private static final int JAMMER_BUFFER_SIZE = 512;
     // 干扰器噪音发生概率，0.01 即 1%
-    private static final double JAMMER_NOISE_PROBABILITY = 0.01;
+    private static final double JAMMER_NOISE_PROBABILITY = 0.0002;
+    // 干扰器最大连续干扰（翻转比特）数，如超过分组交织数则可能无法纠错
+    private static final int JAMMER_MAX_BURST = 8;
 
     /**
      * 利用 Apache Commons CLI 处理命令行输入参数的逻辑
@@ -109,14 +109,15 @@ public class HammingCodec {
             ) {
 
                 if (cmd.hasOption("e")) {
-                    System.out.println("Mode: Encode");
+                    System.out.println("模式：编码器");
                     Encoder.encodeStream(in, out, ENCODER_DATA_PER_BLOCK, ENCODER_GROUPS_PER_INTERLEAVING);
                 } else if (cmd.hasOption("d")) {
-                    System.out.println("Mode: Decode");
+                    System.out.println("模式：解码器");
                     Decoder.decodeStream(in, out, ENCODER_DATA_PER_BLOCK, ENCODER_GROUPS_PER_INTERLEAVING);
                 } else if (cmd.hasOption("x")) {
-                    System.out.println("Mode: Distort");
-                    Jammer.distortStream(in, out, JAMMER_BUFFER_SIZE, JAMMER_NOISE_PROBABILITY);
+                    System.out.println("模式：干扰器");
+                    var bitsFlipped = Jammer.distortStream(in, out, JAMMER_NOISE_PROBABILITY, JAMMER_MAX_BURST);
+                    System.out.println("翻转比特数：" + bitsFlipped);
                 }
 
                 in.close();

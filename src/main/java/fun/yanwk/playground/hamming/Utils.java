@@ -41,4 +41,16 @@ public class Utils {
     public static byte flipBit(byte b, int pos) {
         return (byte) (b ^ (1 << pos));
     }
+
+    /**
+     * 翻转字节型数组中一个特定位置的比特。
+     * 注意是直接操作数组元素，原地翻转，无返回值。
+     *
+     * @param bitAddr 该比特在字节数组中的全局地址。注意：视字节数组在内存中为连续地址，如： 0 表示第 0 字节的 7 号位（最左位）
+     */
+    public static void flipBitInArray(byte[] bytes, int bitAddr) {
+        int byteIndex = bitAddr / 8;
+        int bitIndex = 7 - (bitAddr % 8);
+        bytes[byteIndex] = flipBit(bytes[byteIndex], bitIndex);
+    }
 }
