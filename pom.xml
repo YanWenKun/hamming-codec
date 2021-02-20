@@ -36,6 +36,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <!-- 构建可执行的 fat-jar -->
