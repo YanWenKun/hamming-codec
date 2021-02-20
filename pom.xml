@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- 软件制品信息 开始 -->
+    <groupId>fun.yanwk.playground</groupId>
+    <artifactId>hamming-codec</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>Hamming Codec</name>
+    <description>玩具性质的汉明码编解码器。</description>
+    <inceptionYear>2021</inceptionYear>
+    <!-- 软件制品信息 结束 -->
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>11</maven.compiler.release>
+        <!-- 自Java9开始，可不用写：<maven.compiler.source>11</maven.compiler.source> -->
+        <!-- 自Java9开始，可不用写：<maven.compiler.target>11</maven.compiler.target> -->
+        <!-- 这是SpringBoot定义的属性，不要搞混：<java.version>11</java.version> -->
+    </properties>
+
+    <build>
+        <!-- pluginManagement 仅声明插件，不主动加载 -->
+        <pluginManagement>
+            <plugins>
+                <!-- 为了支持 Java 11，手工确保保证使用最新版本编译插件 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <!-- 以下纯属折腾 -->
+                <!-- Maven依赖项可以用区间表示版本，但是插件不能 -->
+                <!-- 也正因如此，显示指定过多插件版本不是一个好习惯 -->
+                <!-- 插件本身的版本泛化相当于编译工具的版本泛化，是不合适的。 -->
+                <!-- 应该依赖于父级项目统一管理，也就是此处 pluginManagement 的作用 -->
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <!-- 该插件使依赖项的版本号可以用区间描述 -->
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                </plugin>
+                <!-- 对默认模板的二次折腾 -->
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.9.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
