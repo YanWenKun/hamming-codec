@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DecoderTest {
 
-
     @Test
     void testDecodeStream1() throws IOException {
         var sample = new byte[]{
@@ -51,6 +50,39 @@ public class DecoderTest {
             -128, 0, -128, -128, -128, -128, -128, 0,
             -128, -128, -128, 0, -128, -128, -128, 0,
             -128, -128, 0, -128, -128, -128, -128, 0,
+            -128, -128, -128, 0, 0, -128, 0, 0,
+            0, -128, -128, 0, -128, -128, 0, 0};
+        // 注意数据长度不对齐的情况下需要填充 0
+        var expectedShort = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789hello_world!".getBytes();
+        var expected = new byte[128];
+        System.arraycopy(expectedShort, 0, expected, 0, expectedShort.length);
+
+        var bis = new ByteArrayInputStream(sample);
+        var bos = new ByteArrayOutputStream();
+        Decoder.decodeStream(bis, bos, 8, 8);
+        assertArrayEquals(expected, bos.toByteArray());
+    }
+
+    @Test
+    void testDecodeStream3() throws IOException {
+        // 将测试用例2的数据人为制造连续错误
+        var sample = new byte[]{
+            -114, 12, 68, 0, -119, -2, -15, 51,
+            42, 84, 15, 14, -2, 0, -2, -15,
+            -14, 55, 90, 1, -16, 1, 0, -2,
+            -31, 39, 74, 1, -31, -2, 0, -2,
+            -1, -31, 39, 74, -31, 31, 1, 7, // 这里
+            -4, -29, 39, 73, -32, 28, -4, 0,
+            -4, -29, 39, 73, -4, -32, 3, 0,
+            -3, -29, 38, 73, -4, -30, -4, 0,
+            -48, -3, -29, 102, -88, 29, 30, 3,
+            0, -64, -64, 0, 0, -64, -64, 0,
+            0, -128, -64, 0, 0, 0, -128, -64,
+            -64, 0, -128, -128, 0, 64, 0, -128,
+            -128, 0, -128, -128, -128, -128, 0, -128,
+            -128, 0, -128, -128, -128, -128, -128, 0,
+            -128, -128, -128, 0, -128, -128, -128, 0,
+            -128, -128, 0, -128, -128, -128, -128, 7, // 这里
             -128, -128, -128, 0, 0, -128, 0, 0,
             0, -128, -128, 0, -128, -128, 0, 0};
         // 注意数据长度不对齐的情况下需要填充 0
