@@ -20,6 +20,16 @@
         <!-- 这是SpringBoot定义的属性，不要搞混：<java.version>11</java.version> -->
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>[5.7.1, 5.7.99)</version><!-- Maven依赖项可以用区间表示版本 -->
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
     <build>
         <!-- pluginManagement 仅声明插件，不主动加载 -->
         <pluginManagement>
