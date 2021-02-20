@@ -1,0 +1,80 @@
+= 汉明码编解码器（非实用）
+
+在学习汉明码后尝试写的编解码器（玩具级别）。
+
+汉明码是一种线性纠错码，可在信息传输中保障数据的完整性。 +
+现如今汉明码的应用已不多，但其本身设计精妙，颇具启发性，对后续各类编码的学习有很大意义。
+
+推荐观看教程：
+
+1. https://www.bilibili.com/video/BV1WK411N7kz
+2. https://www.bilibili.com/video/BV1pV411y7E8
+
+本程序尝试在软件层面模仿 ECC 内存的纠错机制，以文件为操作对象。
+
+* 使用“(72,64) SEC-DED 汉明码”编码
+* 使用“分组交织”
+
+== 编译
+
+前提条件：
+
+* JDK 11+
+
+[source,bash]
+----
+./mvnw clean package
+----
+
+== 运行
+
+[source,bash]
+----
+cd target/
+
+# 查看帮助
+java -jar hamming-codec-1.0.0.jar --help
+
+# 编码文件
+java -jar hamming-codec-1.0.0.jar --encode file1.txt file1.send
+
+# 模拟干扰效果（随机翻转比特）
+java -jar hamming-codec-1.0.0.jar --distort file1.send file1.recv
+
+# 纠错、解码文件
+java -jar hamming-codec-1.0.0.jar --decode file1.recv file1_recovered.txt
+
+----
+
+== 特点
+
+* 可变入长，从 (13,8) 到 (72,64) 再到 (8388633,8388608) 均可编码。
+* SEC-DED 编码，拥有扩展校验位：单错可纠错，双错可感知。
+* 可调整的分组交织数量。
+
+* 没有用查表法、硬编码优化
+** 本质上是个玩具，以实践理论为目的。
+
+* Java 编写，C 风格，静态方法的堆砌，一大堆注释……
+** 各种位操作已经够难理解了，就不把程序搞复杂了。
+
+* 可执行 jar 包
+** 套了 Maven，方便丢 IDE。
+
+* 单元测试和集成测试
+** 搓了几个测试用例，如果你刚刚自己实现了编解码器，这几个用例能帮你节省点时间。
+
+== 不足
+
+* 未使用卷积交织
+** 分组交织抗连续干扰的效果要弱于卷积交织
+
+* 如果数据不是编码块大小的整数倍，则填充 0x00，会使文件末尾的文本显示为"NUL"
+
+* 使用 Apache Commons CLI 库
+** 纯粹好玩用的这个老库，实际用起来确实非常啰嗦……
+** 新项目强烈建议用 https://github.com/remkop/picocli[picocli] ，人 生 苦 短
+
+* 因为嫌麻烦，没有把“编码长度”做成 CLI 参数
+** 但程序本身是可以自适应编码长度的
+** 在 `HammingCodec` 类中修改常量即可，别的地方不用改

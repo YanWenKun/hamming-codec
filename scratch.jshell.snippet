@@ -5,9 +5,6 @@
  输入 8 应返回 9，对应 (72,64) 汉明码
  输入 1048576 应返回 1048580，对应 (8388633,8388608) 汉明码
 */
-
-import java.io.ByteArrayInputStream;
-import java.util.Arrays;
     private static int calcEncodedSize(int dataLength) {
         // 求所需校验位数（不含扩展位）
         final int parityBits = (int) Math.floor(Math.log(dataLength * 8 + 1) / Math.log(2)) + 1;
@@ -36,14 +33,3 @@ import java.util.Arrays;
 
     calcEncodedSize(1048580);
     calcEncodedSize2(1048580);
-
-    //-----------------------------
-
-    ByteArrayInputStream bis = new ByteArrayInputStream("Hello, world".getBytes());
-    byte[] buffer = new byte[8];
-    int i1 = bis.read(buffer);
-    Arrays.toString(buffer)
-    int i2 = bis.read(buffer);
-    Arrays.toString(buffer)
-    int i3 = bis.read(buffer);
-    Arrays.toString(buffer)
